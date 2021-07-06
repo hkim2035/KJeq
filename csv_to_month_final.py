@@ -1,3 +1,8 @@
+"""Code for merging daily PT sensor data (CSV files) to one monthly data.
+
+   - 'input_path', 'hole_ID' and 'target_month' should be given in the code.
+   - Data <= 0 or >=20000 (Pressure) or >=100 (Temperature) are removed."""
+
 import glob
 import os
 import datetime as dt
@@ -5,7 +10,8 @@ import pandas as pd
 
 ##### user input #####
 input_path = "d:\\data\\PTsensor\\"
-target_month = ['2105']
+target_month = ['2106']     #yymm
+hole_ID = ["A1", "A2"]
 
 def read_file(f):
     try:
@@ -19,10 +25,10 @@ def read_file(f):
 
     return readf
 
-for holeID in ["A1", "A2"]:
+for holeID in hole_ID:
     input_path1 = input_path + holeID + "\\MULTI_1"
     output_path = input_path
-    for month in target_month: #yymm
+    for month in target_month: 
         all_files = sorted(glob.glob(os.path.join(input_path1, month + "*.csv")))
         if len(all_files) > 0:
             raw = pd.concat([read_file(f) for f in all_files])
