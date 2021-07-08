@@ -37,8 +37,11 @@ def outlier_remove(time, signal, no_data):
     df = df.set_index(df.time)
     
     before_resampling = len(df)
-    df = df.resample(rule=resampling_interval).first()
-    delta_no = before_resampling - len(df)
+    if len(df.resample(rule=resampling_interval).first()) < before_resampling:
+        df = df.resample(rule=resampling_interval).first()
+        delta_no = before_resampling - len(df)
+    else:
+        delta_no = 0
 
     return filtered_time, filtered_signal, len(signal)-len(filtered_signal), len(signal), delta_no
 
@@ -47,7 +50,7 @@ if __name__== "__main__":
 
     ##### User input #####
     #holeID
-    hole_ID = ["A1", "A2"]
+    hole_ID = ["A2"]
 #   #No. of data for removing outlier
     no_data = 100
     
@@ -55,7 +58,7 @@ if __name__== "__main__":
     
     for holeID in hole_ID:
     
-        sensor_data = glob.glob(f"D:\\Data\\PTsensor\\{holeID}_*_all.csv")
+        sensor_data = glob.glob(f".\\{holeID}_*_all.csv")
         check =0
         
         for sensor in sensor_data:
@@ -74,10 +77,19 @@ if __name__== "__main__":
             print(f"T500 filtered...{removed_No}/{all_No} & {delta_No} reduced")
             T1000_time, T1000_signal, removed_No, all_No, delta_No = outlier_remove(df.Time, df.T1000, no_data)
             print(f"T1000 filtered...{removed_No}/{all_No} & {delta_No} reduced")
-          
+
+            dfout = pd.DataFrame()
+            dfout.insert(0, 'P500_time', np.transpose(P500_time))
+            dfout.insert(1, 'P500_signal', np.transpose(P500_signal))
+            dfout.insert(2, 'P1000_time', np.transpose(P1000_time))
+            dfout.insert(3, 'P1000_signal', np.transpose(P1000_signal))
+            dfout.insert(4, 'T500_time', np.transpose(T500_time))
+            dfout.insert(5, 'T500_signal', np.transpose(T500_signal))
+            dfout.insert(6, 'T1000_time', np.transpose(T1000_time))
+            dfout.insert(7, 'T1000_signal', np.transpose(T1000_signal))
+            
             check += 1
             print(f"filtered..{check}/{len(sensor_data)}")
 
             outfile = sensor[:len(sensor)-4]+"_filtered_resampled.csv"
-
-            df.to_csv(outfile)
+            dfout.to_csv(outfile)
