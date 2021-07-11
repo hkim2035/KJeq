@@ -2,7 +2,6 @@ import datetime
 import folium
 import io
 from PIL import Image
-import selenium
 import numpy as np
 import pandas as pd
 import streamlit as st
