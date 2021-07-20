@@ -50,7 +50,7 @@ if __name__== "__main__":
 
     ##### User input #####
     #holeID
-    hole_ID = ["A2"]
+    hole_ID = ["A1"]
 #   #No. of data for removing outlier
     no_data = 100
     

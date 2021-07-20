@@ -4,19 +4,13 @@ import io
 from PIL import Image
 import numpy as np
 import pandas as pd
-
 from folium.features import DivIcon
+from folium.plugins import HeatMap
+
 from haversine import haversine
 
-#======================
-targetY = 2021
-targetM = 6
-#======================
 
-
-wsmfile = ".\\wsmK.csv"
-eqtfile = ".\\list_KJeq.csv"
-obsfile = ".\\eq_obs3.csv"
+eqtfile = ".\\list_KJeq210719.csv"
 
 monitor = pd.DataFrame({'LAT': [35.746305, 35.741583],
                         'LON': [129.205945, 129.120528]},
@@ -26,29 +20,16 @@ monitor = pd.DataFrame({'LAT': [35.746305, 35.741583],
 #                       index = ["Monitoring A1", "Monitoring A2", "Monitoring C2"])
 
 
-def load_wsm(wsmfile):
-    wsm = pd.read_csv(wsmfile)
-    wsmK= wsm[wsm.COUNTRY=="Korea - Republic of"].loc[:,['ID','LAT','LON','AZI','TYPE','DEPTH','REGIME']]
-    return wsmK
-
 def load_eq(eqtfile):
-    eqtlist = pd.read_csv(eqtfile, skiprows=2, sep="\t", engine="python", encoding="euc-kr")
+    eqtlist = pd.read_csv(eqtfile, skiprows=1, sep=",", engine="python", encoding="cp437")
     eqtlist = eqtlist.dropna(axis=1)
-    eqtlist.columns = ["Idx", "Time","Mag", "Depth", "LAT", "LON","Pos"]
+    eqtlist.columns = ["Time","Mag", "Depth", "LAT", "LON","Pos"]
     
     eqtlist.LAT = list(map(lambda x: float(x.split()[0]),eqtlist.LAT))
     eqtlist.LON = list(map(lambda x: float(x.split()[0]),eqtlist.LON))
     return eqtlist
 
-def load_obs(obsfile):
-    obslist = pd.read_csv(obsfile, skiprows=1, names=['Code', 'LAT', 'LON'], 
-                          engine='python', encoding='utf-8')
-    return obslist
-
-wsmK = load_wsm(wsmfile)
 eqlist = load_eq(eqtfile)
-obslist = load_obs(obsfile)
-
 
 Maptype = 'OpenStreetMap'
 
@@ -72,10 +53,10 @@ folium.Circle(
 
 eqlist.Time = pd.to_datetime(eqlist.Time)
 
-filename = f'KJeq-{targetY:04d}-{targetM:02d}'
-eqshow = eqlist[(eqlist.Time.dt.year==targetY) & (eqlist.Time.dt.month==targetM)]
-#eqshow = eqlist
+eqshow = eqlist
+
 eqshow = eqshow.sort_values(by=['Time'], axis=0)
+
 if len(eqshow) != 0:
     i = 0
     eqresult = ""
@@ -85,29 +66,14 @@ if len(eqshow) != 0:
         eqdistA2 = haversine((monitor.LAT[1],monitor.LON[1]), (eq_each.LAT,eq_each.LON))
         print(i)
         eqtext = f'No.{i} {eq_each.Time} | Mag.:{eq_each.Mag} | Depth:{eq_each.Depth} km | Dist_A1:{eqdistA1:6.3f} km | Dist_A2:{eqdistA2:6.3f} km'
-        if eq_each.Mag >= 2: 
-            eqcolor = 'red'
-            eqradius = 130
-        else:
-            eqcolor = 'purple'
-            eqradius = 100
-        folium.Circle(
-            location=[eq_each.LAT, eq_each.LON], radius=eqradius, color=eqcolor, fillcolor=eqcolor,
-            z_index_offset=0, fill=True, tooltip=eqtext, popup=eqtext).add_to(m)
-        folium.map.Marker([eq_each.LAT, eq_each.LON], 
-            icon=DivIcon(icon_size=(300,36), icon_anchor=(0,0),
-            html=f'<div style="font-size: 15pt"> <em> <strong> {i}</strong> </em> </div>')).add_to(m)
         eqresult = eqresult + eqtext + "\n"
+        
     print(eqresult)
-    m.save(filename+'.html')
-
-    # A problem: png export
-    #img_data = m._to_png(5)
-    #img = Image.open(io.BytesIO(img_data))
-    #img.save(filename + '.png')
     
-    f = open(filename + '.txt','w')
-    f.write(eqresult)
-    f.close()
+
+    HeatMap(zip(eqshow.LAT, eqshow.LON), min_opacity=0.5, radius=3, blur=1, max_zoom=1, color='red').add_to(m)
+
 else:
     print("No earthquake detected.")
+
+m.save("D:\\tempH.html")
