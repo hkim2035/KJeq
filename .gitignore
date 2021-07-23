@@ -222,3 +222,12 @@ TELLUS_PT_sensor_A1_2021_05-1.png
 TELLUS_PT_sensor_A1_2021_05-2.png
 TELLUS_PT_sensor_A1_2021_05-3.png
 TELLUS_PT_sensor_A1_2021_06-1.png
+anomaly_detect_01.png
+anomaly_detect_02.png
+merge.csv
+merge.xlsx
+STL_output_raw.png
+STL_output_resample_1min_freq1440.png
+STL_output_resample_1min_freq2880.png
+STL_output_resample_1min_freq4320.png
+STL_output_resample_2min_freq1440.png

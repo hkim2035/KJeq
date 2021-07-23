@@ -33,11 +33,17 @@ ts_diff = ts.diff()
 ts_diff.dropna(inplace=True)
 check_stationarity(ts_diff)
 
-ts_diff = ts.diff()
-ts_diff.dropna(inplace=True)
-check_stationarity(ts_diff)
-
 plt.plot(ts_diff)
 plt.title('Differenced Time Series')
 plt.grid()
 plt.show()
+
+
+
+### Manual setting of model parameters and multi-step forecasting ###
+
+from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
+plot_pacf(ts_diff, lags =12)
+plt.show()
+
+print()
