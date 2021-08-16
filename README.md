@@ -1,37 +1,12 @@
-## Welcome to GitHub Pages
+# 동남권 PT 센서 모니터링(압력, 온도)
 
-You can use the [editor on GitHub](https://github.com/hkim2035/KJeq/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
+## 모니터링 현황
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### 파일 처리
 
-### Markdown
+1. csv file from DAQ -> 100도 , 20 MPa  초과 시 가져오지 않음 -> A~~all.csv
+2. Datetime64로 형식 변경하고 인덱스화, column 명 통일
+3. hampel 필터 적용 -> 필터링된 아웃라이어 개수 카운팅할 것 -> A~~all_filtered.csv
+4. csv 연 단위 통계 내고 전체 개요 그래프 4개
+5. 
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/hkim2035/KJeq/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
