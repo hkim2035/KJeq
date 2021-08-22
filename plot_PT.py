@@ -33,6 +33,8 @@ def outlier_treatment(datacolumn):
     upper_range = Q3 + (1.5 * IQR)
     return lower_range, upper_range
 
+
+
 eqtfile = ".\\list_KJeq.csv"
 rainfile = ".\\rain2.csv"
 
