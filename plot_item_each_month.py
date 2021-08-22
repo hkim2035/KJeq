@@ -2,11 +2,15 @@ import pandas as pd
 import matplotlib.pyplot  as plt 
 import glob
 
-if __name__=="__main__":
+if __name__ == "__main__":
     
     for site in ["A1","A2"]:
         for item in ["P500","P1000","T500","T1000"]:
             
+            all_files = sorted(glob.glob(f".\{site}*{item}.csv"))
+
+            for raw in all_files:
+                
             fig, ax = plt.subplots(figsize=(8,3))
             ax.grid()
             ax.set_title(f"Monitoring site {site} - {item}", fontsize="16")
