@@ -12,12 +12,9 @@ def rain(datafile):
 
 if __name__ == "__main__":
 
-    fig, ax = plt.subplots((5,1), figsize=(8,11))
-    ax.sharex()
-    ax.grid()
+    fig, [axR, axP5, axP10, axT5, axT10] = plt.subplots(5,1, figsize=(8,11), sharex=True)
 
-    df_rain = rain(".\KJ_rain.csv")
-    ax.bar(df_rain.index, df_rain, color="blue", zorder=1, alpha=0.4)
+    df_rain = rain("KJ_rain.csv")
 
     for raw in ["A1_2010", "A1_2011", "A1_2012", "A1_2101", "A1_2102", "A1_2103", "A1_2104", "A1_2105", "A1_2106", "A2_2011", "A2_2012", "A2_2101", "A2_2102", "A2_2103", "A2_2104", "A2_2105", "A2_2106"]:
 
@@ -26,6 +23,7 @@ if __name__ == "__main__":
         this = f"{year}-{month}"
         
         df_rain = df_rain[this]
+        axR.bar(df_rain.index, df_rain, color="blue", zorder=1, alpha=0.8)
 
         for item in ["P500", "P1000", "T500", "T1000"]:
 
@@ -37,7 +35,7 @@ if __name__ == "__main__":
             plt.plot(dftmp[item],)
             print()            
 
-
+    axP5.grid(True)
     print()
 
 #   for site in ["A1","A2"]:
