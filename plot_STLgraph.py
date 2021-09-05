@@ -33,20 +33,20 @@ monitor = pd.DataFrame({'LAT': [35.746305, 35.741583, 35.730023],
                        index=["A1", "A2", "C2"])
 
 
-site = "A2" #"A1"
+site = "A1"
 
-for YYMM in ['2011', '2012', '2101', '2102', '2103', '2104', '2105', '2106', '2010']:
+for YYMM in ['2106']: # ['2011', '2012', '2101', '2102', '2103', '2104', '2105', '2106', '2010']:
 
-    df = pd.read_csv(f"D:\\git\\KJeq\\{site}_{YYMM}_all_filtered.csv", sep=',', header=0, skip_blank_lines=True)
+    df = pd.read_csv(f"D:\\git\\KJeq\\{site}_{YYMM}_all_P500.csv", sep=',', header=0, skip_blank_lines=True)
 
     YY = int(YYMM[:2])+2000
     MM = int(YYMM[2:])
 
     ts = df.iloc[:,[1,2]]
-    ts['P500_time'] = pd.to_datetime(ts['P500_time'])
-    ts.set_index('P500_time', inplace=True)
+    ts['DateTime'] = pd.to_datetime(ts['DateTime'])
+    ts.set_index('DateTime', inplace=True)
 
-    tsR = ts['P500_signal'].groupby(partial(round, freq="1T")).mean()
+    tsR = ts['P500'].groupby(partial(round, freq="1T")).mean()
 
     plt.rc('figure',figsize=(18,14))
     plt.rc('font', size=12)
