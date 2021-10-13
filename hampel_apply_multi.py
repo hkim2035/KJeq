@@ -12,7 +12,7 @@ def DataProcess(raw, df, dfX):
     outlier = hampel(dfX, 100, 3)
     dfX = dfX.drop(outlier)
     dfT = df.DateTime.drop(outlier)
-    logfile = open("D:\\git\\KJeq\\hampel.log", 'a')
+    logfile = open("C:\\Users\\hyunw\\OneDrive\\Data\\PTsensor\\hampel.log", 'a')
     logfile.write(f"No. of outlier in {dfX.name}: {len(outlier)}\n")
     logfile.close()
     exp_file = f"{os.path.basename(raw)[:-4]}_{dfX.name}.csv"
@@ -24,7 +24,7 @@ def DataProcess(raw, df, dfX):
 
 if __name__ == '__main__':
 
-    all_files = sorted(glob.glob("D:\\git\\KJeq\\A*_all.csv"))
+    all_files = sorted(glob.glob("C:\\Users\\hyunw\\OneDrive\\Data\\PTsensor\\A*_all.csv"))
 
     for raw in all_files:
         df = pd.read_csv(raw, sep=',', header=0, skip_blank_lines=True)
@@ -32,7 +32,7 @@ if __name__ == '__main__':
         df.rename(columns={"MULTI_T1_REAL": "T1000", "MULTI_T2_REAL": "T500"}, inplace=True)
         df['DateTime'] = pd.to_datetime(df.pop('Date')) + pd.to_timedelta(df.pop('Time'))
         #df.set_index('DateTime', inplace=True)
-        logfile = open("D:\\git\\KJeq\\hampel.log", 'a')
+        logfile = open("C:\\Users\\hyunw\\OneDrive\\Data\\PTsensor\\hampel.log", 'a')
         logfile.write(os.path.basename(raw))
         logfile.write(f"No. of data: {len(df)}\n")
         logfile.close()

@@ -7,10 +7,10 @@ import os
 
 for type in ['P500', 'P1000', 'T500', 'T1000']:
     
-    rf = open(f"D:\\git\\KJeq\\range_{type}.csv", 'w')
+    rf = open(f"c:\\git\\KJeq\\range_{type}.csv", 'w')
     rf.write(f"Site,YYMM,{type}mean,{type}std,{type}max,{type}min\n")
 
-    all_files = sorted(glob.glob(f"D:\\git\\KJeq\\A*_all_{type}.csv"))
+    all_files = sorted(glob.glob(f"c:\\users\\hyunw\\OneDrive\\Data\\PTsensor\\A*_all_{type}.csv"))
 
     for raw in all_files:
         df = pd.read_csv(raw, sep=',', header=0, skip_blank_lines=True)

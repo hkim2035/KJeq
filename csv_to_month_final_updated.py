@@ -9,9 +9,9 @@ import datetime as dt
 import pandas as pd
 
 ##### user input #####
-input_path = "d:\\data\\PTsensor\\"
-target_month = ['2106']     #yymm
-hole_ID = ["A1", "A2"]
+input_path = "C:\\Users\\hyunw\\OneDrive\\Data\\PTsensor\\"
+target_month = ['2010'] #, '2012', '2101', '2102', '2103', '2104', '2105']     #yymm
+hole_ID = ["A1"] #["A2"]
 
 def read_file(f):
     try:
@@ -26,7 +26,7 @@ def read_file(f):
     return readf
 
 for holeID in hole_ID:
-    input_path1 = input_path + holeID + "\\MULTI_1"
+    input_path1 = input_path + holeID #+ "\\MULTI_1"
     output_path = input_path
     for month in target_month: 
         all_files = sorted(glob.glob(os.path.join(input_path1, month + "*.csv")))
@@ -34,8 +34,8 @@ for holeID in hole_ID:
             raw = pd.concat([read_file(f) for f in all_files])
             #filter
             #dataset removed: x<=0, x>20,000(P) OR 100(T)
-            raw = raw[(raw.MULTI_P1_REAL > 0) & (raw.MULTI_P1_REAL < 20000)]
-            raw = raw[(raw.MULTI_P2_REAL > 0) & (raw.MULTI_P2_REAL < 20000)]
+            raw = raw[(raw.MULTI_P1_REAL > 0) & (raw.MULTI_P1_REAL <= 20000)]
+            raw = raw[(raw.MULTI_P2_REAL > 0) & (raw.MULTI_P2_REAL <= 20000)]
             raw = raw[(raw.MULTI_T1_REAL > 0) & (raw.MULTI_T1_REAL <= 100)]
             raw = raw[(raw.MULTI_T2_REAL > 0) & (raw.MULTI_T2_REAL <= 100)]
             raw.to_csv(output_path + holeID + "_" + month +"_all.csv")
