@@ -13,9 +13,10 @@ def DataProcess(raw, df, dfX):
     outlier = hampel(dfX, 100, 3)
     dfX = dfX.drop(outlier)
     dfT = df.DateTime.drop(outlier)
-
-    #logfile.write(f"No. of outlier in {dfX.name}: {len(outlier)}\n")
-    # logfile.close()
+    logfile = open(
+        "C:\\Users\\hyunw\\OneDrive\\Data\\PTsensor\\hampel.log", 'a')
+    logfile.write(f"No. of outlier in {dfX.name}: {len(outlier)}\n")
+    logfile.close()
     exp_file = f"{os.path.basename(raw)[:-4]}_{dfX.name}.csv"
     dftemp = pd.concat([dfT, dfX], axis=1)
     dftemp.to_csv(exp_file)
@@ -26,13 +27,8 @@ def DataProcess(raw, df, dfX):
 
 if __name__ == '__main__':
 
-    source_folder = "D:\\git\data\PT_A2"
-    target_folder = source_folder + "\\filtered"
-
-    if os.path.isdir(target_folder) == False:
-        os.mkdir(target_folder)
-
-    all_files = sorted(glob.glob(source_folder + "\\*.csv"))
+    all_files = sorted(
+        glob.glob("C:\\Users\\hyunw\\OneDrive\\Data\\PTsensor\\A*_all.csv"))
 
     for raw in all_files:
         df = pd.read_csv(raw, sep=',', header=0, skip_blank_lines=True)
@@ -43,7 +39,8 @@ if __name__ == '__main__':
         df['DateTime'] = pd.to_datetime(
             df.pop('Date')) + pd.to_timedelta(df.pop('Time'))
         #df.set_index('DateTime', inplace=True)
-        logfile = open(target_folder + "\\hampel.log", 'a')
+        logfile = open(
+            "C:\\Users\\hyunw\\OneDrive\\Data\\PTsensor\\hampel.log", 'a')
         logfile.write(os.path.basename(raw))
         logfile.write(f"No. of data: {len(df)}\n")
         logfile.close()

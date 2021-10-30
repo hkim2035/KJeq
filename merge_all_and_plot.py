@@ -3,7 +3,7 @@ import matplotlib.pyplot  as plt
 import glob
 
 def merge_all(site, item):
-    all_files = sorted(glob.glob(f".\{site}*{item}.csv"))
+    all_files = sorted(glob.glob(f"c:\\users\\hyunw\\OneDrive\\Data\\PTsensor\\{site}*{item}.csv"))
     df_rspm = pd.DataFrame()
     df_rsps = pd.DataFrame()
     for raw in all_files:
@@ -24,7 +24,7 @@ if __name__=="__main__":
         for item in ["P500","P1000","T500","T1000"]:
         
             dfm, dfs = merge_all(site,item)
-            fig, ax = plt.subplots(figsize=(8,6))
+            fig, ax = plt.subplots(figsize=(10,6))
             ax_c = ax.twinx()
             ax.grid()
             ax.set_title(f"Monitoring site {site} - {item}", fontsize="16")
@@ -32,7 +32,7 @@ if __name__=="__main__":
             if item[0] == "P":
                 tmpstr = f"Hourly mean value of pressure at {item[1:]} m (KPa)"
             else:
-                tmpstr = f"Hourly mean value of temperature at {item[1:]} m (Celsius)"
+                tmpstr = f"Hourly mean value of temp. at {item[1:]} m (Celsius)"
             ax.set_ylabel(tmpstr, fontsize="15")
             ax_c.set_ylabel("Standard deviation", fontsize="15")
 
@@ -57,4 +57,4 @@ if __name__=="__main__":
 
             plt.savefig(f"plot_{site}_{item}.png", dpi=300)
             #plt.show()
-            print("check")
+            print(f"{site}_{item}...checked.")
